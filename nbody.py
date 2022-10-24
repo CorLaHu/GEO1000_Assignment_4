@@ -9,7 +9,7 @@
 # modified by Andriy Misyura
 # slightly modified by bmmeijers
 
-import sys
+import sys, csv
 from math import sqrt, pi as PI
 
 
@@ -116,9 +116,21 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
 def main(n, ref="sun"):
     offset_momentum(BODIES[ref])
     report_energy()
-    advance(0.01, n)
+    with open('output.csv', 'a') as f:
+        columns = ['iteration', 'body_name', 'x', 'y', 'z']
+        f.write(';'.join(columns) + '/n')
+        for i in range(0, n):
+            advance(0.01, 1)
+            #TO DO: write values of bodies to f
+
+
     report_energy()
 
+# def main(n, ref="sun"):
+#     offset_momentum(BODIES[ref])
+#     report_energy()
+#     advance(0.01, n)
+#     report_energy()
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
