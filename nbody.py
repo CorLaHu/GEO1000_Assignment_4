@@ -118,16 +118,15 @@ def main(n, ref="sun"):
     report_energy()
     with open('output.csv', 'a') as f:
         columns = ['iteration', 'body_name', 'x', 'y', 'z']
-        f.write(';'.join(columns) + '/n')
+        f.write(';'.join(columns) + '\n')
         for i in range(0, n):
             advance(0.01, 1)
             for key in BODIES:
                 f.write(str(i) + ';')
                 f.write(str(key) + ';')
-                f.write(';'.join(key[0]))
+                coordinates = BODIES[key][0]
+                f.write(';'.join(str(i) for i in coordinates))
                 f.write('\n')
-
-
     report_energy()
 
 # def main(n, ref="sun"):
@@ -135,6 +134,8 @@ def main(n, ref="sun"):
 #     report_energy()
 #     advance(0.01, n)
 #     report_energy()
+
+main(10)
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
