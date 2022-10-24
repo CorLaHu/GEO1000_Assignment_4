@@ -16,7 +16,7 @@ from math import sqrt, pi as PI
 def combinations(l):
     result = []
     for x in range(len(l) - 1):
-        ls = l[x + 1 :]
+        ls = l[x + 1:]
         for y in ls:
             result.append((l[x][0], l[x][1], l[x][2], y[0], y[1], y[2]))
     return result
@@ -113,21 +113,23 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
     v[2] = pz / m
 
 
-def main(n, ref="sun"):
-    offset_momentum(BODIES[ref])
-    report_energy()
-    with open('output.csv', 'a') as f:
+def write_to_csv(n):
+    with open('output.csv', 'w') as f:
         columns = ['iteration', 'body_name', 'x', 'y', 'z']
         f.write(';'.join(columns) + '\n')
         for i in range(0, n):
             advance(0.01, 1)
             for key in BODIES:
-                f.write(str(i) + ';')
-                f.write(str(key) + ';')
                 coordinates = BODIES[key][0]
-                f.write(';'.join(str(i) for i in coordinates))
-                f.write('\n')
+                f.write(f"{i};{key};")
+                f.write(';'.join(str(i) for i in coordinates) + "\n")
+
+def main(n, ref="sun"):
+    offset_momentum(BODIES[ref])
     report_energy()
+    write_to_csv(n)
+    report_energy()
+
 
 # def main(n, ref="sun"):
 #     offset_momentum(BODIES[ref])
@@ -135,7 +137,7 @@ def main(n, ref="sun"):
 #     advance(0.01, n)
 #     report_energy()
 
-main(10)
+main(100)
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
