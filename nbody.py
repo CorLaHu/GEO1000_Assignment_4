@@ -121,7 +121,11 @@ def main(n, ref="sun"):
         f.write(';'.join(columns) + '/n')
         for i in range(0, n):
             advance(0.01, 1)
-            #TO DO: write values of bodies to f
+            for key in BODIES:
+                f.write(str(i) + ';')
+                f.write(str(key) + ';')
+                f.write(';'.join(key[0]))
+                f.write('\n')
 
 
     report_energy()
