@@ -36,7 +36,7 @@ rects1 = ax.bar(x - width/2, ctimes, width, label='C++')
 rects2 = ax.bar(x + width/2, pytimes, width, label='Python')
 plt.yscale('log')
 
-ax.set_ylabel('Runtime in seconds')
+ax.set_ylabel('Runtime in log(seconds)')
 ax.set_xlabel('Instance size')
 ax.set_xticks(x, labels)
 ax.legend()
