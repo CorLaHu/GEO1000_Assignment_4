@@ -114,26 +114,30 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
     v[2] = pz / m
 
 
-def write_to_csv(n):
-    with open("output.csv", "w") as f:
-        columns = ["iteration", "body_name", "x", "y", "z"]
-        f.write(";".join(columns) + "\n")
-        # writes the bodies' initial position to csv
-        for body_name, body_data in BODIES.items():
-            f.write(f"{0};{body_name};")
-            position_data = (str(i) for i in body_data[0])
-            f.write(";".join(position_data) + "\n")
-        for i in range(1, n + 1):
-            advance(0.01, 1)
-            for body_name, body_data in BODIES.items():
-                f.write(f"{i};{body_name};")
-                f.write(";".join(str(i) for i in body_data[0]) + "\n")
+def write_initial_data(f):
+    columns = ["iteration", "body_name", "x", "y", "z"]
+    f.write(";".join(columns) + "\n")
+    # writes the bodies' initial position to csv
+    for body_name, body_data in BODIES.items():
+        f.write(f"{0};{body_name};")
+        position_data = (str(i) for i in body_data[0])
+        f.write(";".join(position_data) + "\n")
+
+
+def write_iteration_data(iteration, file):
+    for body_name, body_data in BODIES.items():
+        file.write(f"{iteration};{body_name};")
+        file.write(";".join(str(i) for i in body_data[0]) + "\n")
 
 
 def main(n, ref="sun"):
     offset_momentum(BODIES[ref])
     report_energy()
-    write_to_csv(n)
+    with open("output.csv", "w") as f:
+        write_initial_data(f)
+        for i in range(1, n + 1):
+            advance(0.01, 1)
+            write_iteration_data(i, f)
     report_energy()
 
 
