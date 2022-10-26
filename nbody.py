@@ -114,20 +114,19 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
     v[2] = pz / m
 
 
-def write_initial_data(f):
+def write_initial_data(file):
     columns = ["iteration", "body_name", "x", "y", "z"]
-    f.write(";".join(columns) + "\n")
+    file.write(";".join(columns) + "\n")
     # writes the bodies' initial position to csv
     for body_name, body_data in BODIES.items():
-        f.write(f"{0};{body_name};")
-        position_data = (str(i) for i in body_data[0])
-        f.write(";".join(position_data) + "\n")
+        position_separated_str = ";".join(str(i) for i in body_data[0])
+        file.write(f"{0};{body_name};{position_separated_str}\n")
 
 
 def write_iteration_data(iteration, file):
     for body_name, body_data in BODIES.items():
-        file.write(f"{iteration};{body_name};")
-        file.write(";".join(str(i) for i in body_data[0]) + "\n")
+        position_separated_str = ";".join(str(i) for i in body_data[0])
+        file.write(f"{iteration};{body_name};{position_separated_str}\n")
 
 
 def main(n, ref="sun"):
