@@ -118,14 +118,16 @@ def write_to_csv(n):
     with open("output.csv", "w") as f:
         columns = ["iteration", "body_name", "x", "y", "z"]
         f.write(";".join(columns) + "\n")
-        for key in BODIES:  # writes the bodies' initial position to csv
-            f.write(f"{0};{key};")
-            f.write(";".join(str(i) for i in BODIES[key][0]) + "\n")
+        # writes the bodies' initial position to csv
+        for body_name, body_data in BODIES.items():
+            f.write(f"{0};{body_name};")
+            position_data = (str(i) for i in body_data[0])
+            f.write(";".join(position_data) + "\n")
         for i in range(1, n + 1):
             advance(0.01, 1)
-            for key in BODIES:
-                f.write(f"{i};{key};")
-                f.write(";".join(str(i) for i in BODIES[key][0]) + "\n")
+            for body_name, body_data in BODIES.items():
+                f.write(f"{i};{body_name};")
+                f.write(";".join(str(i) for i in body_data[0]) + "\n")
 
 
 def main(n, ref="sun"):
