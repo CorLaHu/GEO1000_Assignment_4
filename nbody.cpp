@@ -14,13 +14,14 @@
 #define _USE_MATH_DEFINES // https://docs.microsoft.com/en-us/cpp/c-runtime-library/math-constants?view=msvc-160
 #include <cmath>
 #include <iostream>
+#include <fstream>
 
 
 // these values are constant and not allowed to be changed
 const double SOLAR_MASS = 4 * M_PI * M_PI;
 const double DAYS_PER_YEAR = 365.24;
 const unsigned int BODIES_COUNT = 5;
-
+const std::string SEP = ";";
 
 class vector3d {
 public:
@@ -238,19 +239,51 @@ body state[] = {
         }
 };
 
+void write_body_data_to_csv(const int iteration, std::ofstream &CsvFile) {
+    for (int i = 0; i < BODIES_COUNT; i++) {
+        body current_body = state[i];
+        CsvFile
+            << iteration << SEP
+            << current_body.name << SEP
+            << current_body.position.x << SEP
+            << current_body.position.y << SEP
+            << current_body.position.z << std::endl;
+    }
+}
+
+void write_initial_data(std::ofstream &CsvFile) {
+    CsvFile << "iteration" << SEP << "body_name" << SEP << "x" << SEP << "y" << SEP << "z" << std::endl;
+    write_body_data_to_csv(0, CsvFile);
+}
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
+    if (argc < 2) {
         std::cout << "This is " << argv[0] << std::endl;
         std::cout << "Call this program with an integer as program argument" << std::endl;
         std::cout << "(to set the number of iterations for the n-body simulation)." << std::endl;
         return EXIT_FAILURE;
     } else {
         const unsigned int n = atoi(argv[1]);
+
+        bool EXPORT_CSV = false;
+        if (argc == 3) {
+            EXPORT_CSV = std::strcmp(argv[2], "--export");
+        }
+        std::ofstream CsvFile("output.csv");
+        if (EXPORT_CSV) {
+            write_initial_data(CsvFile);
+        }
+
         offset_momentum(state);
         std::cout << energy(state) << std::endl;
-        for (int i = 0; i < n; ++i) {
+        for (int i = 1; i < n + 1; ++i) {
             advance(state, 0.01);
+            if (EXPORT_CSV) {
+                write_body_data_to_csv(i, CsvFile);
+            }
+        }
+        if (EXPORT_CSV) {
+            CsvFile.close();
         }
         std::cout << energy(state) << std::endl;
         return EXIT_SUCCESS;
