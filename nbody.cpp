@@ -15,6 +15,7 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 
 // these values are constant and not allowed to be changed

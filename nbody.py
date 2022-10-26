@@ -146,7 +146,6 @@ def main(n, ref="sun"):
 #     advance(0.01, n)
 #     report_energy()
 
-main(100)
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
