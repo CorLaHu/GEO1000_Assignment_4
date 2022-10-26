@@ -9,14 +9,15 @@
 # modified by Andriy Misyura
 # slightly modified by bmmeijers
 
-import sys, csv
-from math import sqrt, pi as PI
+import sys
+from math import pi as PI
+from math import sqrt
 
 
 def combinations(l):
     result = []
     for x in range(len(l) - 1):
-        ls = l[x + 1:]
+        ls = l[x + 1 :]
         for y in ls:
             result.append((l[x][0], l[x][1], l[x][2], y[0], y[1], y[2]))
     return result
@@ -114,17 +115,18 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
 
 
 def write_to_csv(n):
-    with open('output.csv', 'w') as f:
-        columns = ['iteration', 'body_name', 'x', 'y', 'z']
-        f.write(';'.join(columns) + '\n')
-        for key in BODIES:      # writes the bodies' initial position to csv
+    with open("output.csv", "w") as f:
+        columns = ["iteration", "body_name", "x", "y", "z"]
+        f.write(";".join(columns) + "\n")
+        for key in BODIES:  # writes the bodies' initial position to csv
             f.write(f"{0};{key};")
-            f.write(';'.join(str(i) for i in BODIES[key][0]) + "\n")
-        for i in range(1, n+1):
+            f.write(";".join(str(i) for i in BODIES[key][0]) + "\n")
+        for i in range(1, n + 1):
             advance(0.01, 1)
             for key in BODIES:
                 f.write(f"{i};{key};")
-                f.write(';'.join(str(i) for i in BODIES[key][0]) + "\n")
+                f.write(";".join(str(i) for i in BODIES[key][0]) + "\n")
+
 
 def main(n, ref="sun"):
     offset_momentum(BODIES[ref])
