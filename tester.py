@@ -5,17 +5,27 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 nbodypy = r"C:\Users\ordin\Documents\Github\GEO1000_Assignment_4\nbody.py"
-nbodyexe = r"C:\Users\ordin\Documents\Github\GEO1000_Assignment_4\cmake-build-release\nbody.exe"
+nbodyrelexe = r"C:\Users\ordin\Documents\Github\GEO1000_Assignment_4\cmake-build-release\nbody.exe"
+nbodydebexe = r"C:\Users\ordin\Documents\Github\GEO1000_Assignment_4\cmake-build-debug\nbody.exe"
 iterations = [5000, 500000, 5000000, 50000000]
-ctimes = []
+
+creltimes = []
+cdebtimes = []
 pytimes = []
 
 for iteration in iterations:
-	print(f"Currently running iteration size number {iteration} in C++")
+	print(f"Currently running iteration size number {iteration} in C++ debug build")
 	t1 = perf_counter()
-	system(f"{nbodyexe} {iteration}")
+	system(f"{nbodydebexe} {iteration}")
 	t2 = perf_counter()
-	ctimes.append(t2 - t1)
+	cdebtimes.append(t2 - t1)
+
+for iteration in iterations:
+	print(f"Currently running iteration size number {iteration} in C++ release build")
+	t1 = perf_counter()
+	system(f"{nbodyrelexe} {iteration}")
+	t2 = perf_counter()
+	creltimes.append(t2 - t1)
 
 for iteration in iterations:
 	print(f"Currently running iteration size number {iteration} in Python")
@@ -24,16 +34,18 @@ for iteration in iterations:
 	t2 = perf_counter()
 	pytimes.append(t2 - t1)
 
-print(ctimes)
+print(cdebtimes)
+print(creltimes)
 print(pytimes)
 
 
 labels = ["5000", "500000", "5000000", "50000000"]
 x = np.arange(len(labels))
-width = 0.35
+width = 0.28
 fig, ax = plt.subplots()
-rects1 = ax.bar(x - width/2, ctimes, width, label='C++')
-rects2 = ax.bar(x + width/2, pytimes, width, label='Python')
+rects1 = ax.bar(x - width, cdebtimes, width, label='C++ Debug')
+rects2 = ax.bar(x, creltimes, width, label='C++ Release')
+rects3 = ax.bar(x + width, pytimes, width, label='Python')
 plt.yscale('log')
 
 ax.set_ylabel('Runtime in log(seconds)')
@@ -43,6 +55,8 @@ ax.legend()
 
 ax.bar_label(rects1, padding=4)
 ax.bar_label(rects2, padding=4)
+ax.bar_label(rects3, padding=4)
+
 
 fig.tight_layout()
 
