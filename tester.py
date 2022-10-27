@@ -6,19 +6,19 @@ import numpy as np
 
 nbodypy = r"C:\Users\ordin\Documents\Github\GEO1000_Assignment_4\nbody.py"
 nbodyexe = r"C:\Users\ordin\Documents\Github\GEO1000_Assignment_4\cmake-build-release\nbody.exe"
-iterations = [5000, 500000, 5000000]
+iterations = [5000, 500000, 5000000, 50000000]
 ctimes = []
 pytimes = []
 
 for iteration in iterations:
-	print(f"Currently running iteration number {iteration} in C++")
+	print(f"Currently running iteration size number {iteration} in C++")
 	t1 = perf_counter()
 	system(f"{nbodyexe} {iteration}")
 	t2 = perf_counter()
 	ctimes.append(t2 - t1)
 
 for iteration in iterations:
-	print(f"Currently running iteration number {iteration} in Python")
+	print(f"Currently running iteration size number {iteration} in Python")
 	t1 = perf_counter()
 	system(f"python {nbodypy} {iteration}")
 	t2 = perf_counter()
@@ -28,7 +28,7 @@ print(ctimes)
 print(pytimes)
 
 
-labels = ["5000", "500000", "5000000"]
+labels = ["5000", "500000", "5000000", "50000000"]
 x = np.arange(len(labels))
 width = 0.35
 fig, ax = plt.subplots()
@@ -41,8 +41,8 @@ ax.set_xlabel('Instance size')
 ax.set_xticks(x, labels)
 ax.legend()
 
-ax.bar_label(rects1, padding=3)
-ax.bar_label(rects2, padding=3)
+ax.bar_label(rects1, padding=4)
+ax.bar_label(rects2, padding=4)
 
 fig.tight_layout()
 
