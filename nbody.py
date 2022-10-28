@@ -132,7 +132,7 @@ def write_iteration_data(iteration, file):
 def main(n, ref="sun"):
     offset_momentum(BODIES[ref])
     report_energy()
-    if sys.argv[2] == "--write":
+    if len(sys.argv) >= 3 and sys.argv[2] == "--write":
         with open("output.csv", "w") as f:
             write_initial_data(f)
             for i in range(1, n + 1):
